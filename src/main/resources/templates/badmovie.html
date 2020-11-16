@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bad Movies</title>
+    </head>
+
+    <body>
+        <p th:each="badMovies : ${badMovies.myMovies}"
+            th:text="${badMovies.original_title} + ' - ' + ${badMovies.overview} + '   ' + ${badMovies.vote_count}"></p>
+
+    </body>
+</html>

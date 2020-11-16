@@ -1,0 +1,69 @@
+package com.moviedb.webservice_MVC_Movie.model;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int userID;
+
+    @Column
+    private String name;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "user_movie_mapping",
+            joinColumns = @JoinColumn(name = "userid")
+    )
+    @Column(name = "movieid")
+    private List<Integer> movieIds;
+
+
+
+    public User() {
+        super();
+        movieIds = new ArrayList<Integer>();
+    }
+
+
+    public User(int userID) {
+        super();
+        this.userID = userID;
+        movieIds = new ArrayList<Integer>();
+    }
+
+
+
+
+    public List<Integer> getMovieIds() {
+        return movieIds;
+    }
+
+
+    public void setMovieIds(List<Integer> movieIds) {
+        this.movieIds = movieIds;
+    }
+
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}

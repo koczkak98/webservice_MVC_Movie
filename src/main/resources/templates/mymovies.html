@@ -1,0 +1,15 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+		<title>My Favourite Movies</title>
+	</head> 
+	
+	<body> 
+	
+		<p th:text="${myMovies.userID}" ></p>
+	
+		<p th:each="myMovie : ${myMovies.myMovies}" 
+			th:text="${myMovie.original_title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_count}"></p>
+	
+	</body> 
+</html>
