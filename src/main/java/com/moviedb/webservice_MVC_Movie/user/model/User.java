@@ -1,4 +1,4 @@
-package com.moviedb.webservice_MVC_Movie.model;
+package com.moviedb.webservice_MVC_Movie.user.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,6 +24,11 @@ public class User {
     @Column(name = "movieid")
     private List<Integer> movieIds;
 
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "pwd")
+    private String pwd;
 
 
     public User() {
@@ -65,5 +70,21 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

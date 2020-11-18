@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
+
+    <body>
+
+    <p> Login </p>
+
+        <form action="/" method="post">
+
+            <label> E-mail adress: </label> <input type="text" name="email" > </input>
+            <p></p>
+            <label>Password: </label> <input type="password" name="pwd" > </input>
+            <input type="submit" value="Login" > </input>
+        </form>
+    <p th:text="${message}" ></p>
+    <p>    </p>
+    <p>     </p>
+    <p>     </p>
+    <p>     </p>
+    <p>-------------------------------------------------    </p>
+    <p> Or SingUp </p>
+
+        <form action="/signup" method="post">
+            <label> Full Name: </label> <input type="text" name="name" > </input>
+            <p></p>
+            <label> Nickname: </label> <input type="text" name="userName" > </input>
+            <p></p>
+            <label> E-mail adress: </label> <input type="text" name="email" > </input>
+            <p></p>
+            <label> Password: </label> <input type="password" name="pwd" > </input>
+            <input type="submit" value="Signup" > </input>
+        </form>
+
+
+
+    </body>
+</html>

@@ -4,12 +4,19 @@
 		<title>My Favourite Movies</title>
 	</head> 
 	
-	<body> 
-	
-		<p th:text="${myMovies.userID}" ></p>
+	<body>
+
+		<p th:text="${nickname}" ></p>
+
+		<p th:text="${users.name}" ></p>
 	
 		<p th:each="myMovie : ${myMovies.myMovies}" 
-			th:text="${myMovie.original_title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_count}"></p>
+			th:text="${myMovie.original_title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
+			'  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
+
+		<form action="/logout" method="get" >
+			<input type="submit" value="LogOut" > </input>
+		</form>
 	
 	</body> 
 </html>
