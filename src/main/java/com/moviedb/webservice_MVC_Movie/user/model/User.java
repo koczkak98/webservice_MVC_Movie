@@ -50,11 +50,9 @@ public class User {
         return movieIds;
     }
 
-
     public void setMovieIds(List<Integer> movieIds) {
         this.movieIds = movieIds;
     }
-
 
     public int getUserID() {
         return userID;
@@ -87,4 +85,6 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public void addMovieIds (int movieId){ this.movieIds.add(movieId);}
 }

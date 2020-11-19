@@ -33,37 +33,47 @@ public class UserController {
                               HttpServletResponse response,
                               Model model)
         {
+            String message = "";
+            boolean isItTrue = true;
 
-                String message = "";
-                model.addAttribute("message", message);
-                List<User> accounts = this.userRepo.findAll();
-                User user = new User();
+            List<User> accounts = this.userRepo.findAll();
 
-                for (int i = 0; i < accounts.size(); i++) {
-                    if (email.equals(accounts.get(i).getEmail())) {
+            if (name.equals("") || userName.equals("")
+                    || email.equals("") || pwd.equals("")) {
 
-                        message = "Such user already exists!";
-                    } else if (name.equals("") || userName.equals("")
-                            || email.equals("") || pwd.equals("")) {
+                isItTrue = false;
+                message = "Some fields are empty!";
+            }
 
-                        message = "Some fields are empty!";
-                    } else {
-                        /** Update user */
-                        user.setName(name);
-                        user.setEmail(email);
-                        user.setPwd(pwd);
-
-                        /** Add Cookies */
-                        Cookie cookie = new Cookie("nickname", userName);
-                        cookie.setMaxAge(108000);
-                        response.addCookie(cookie);
-
-                        /** Save DB */
-                        this.userRepo.save(user);
-                        message = "Successful registration!";
-                    }
+            /** Check the user */
+            for (int i = 0; i < accounts.size(); i++) {
+                if (email.equals(accounts.get(i).getEmail())) {
+                    isItTrue = false;
+                    message = "Such user already exists!";
                 }
+            }
+            model.addAttribute("message", message);
 
+            if (isItTrue == true) {
+                /** Update user */
+                User user = new User();
+                user.setName(name);
+                user.setEmail(email);
+                user.setPwd(pwd);
+
+                /** Save DB */
+                this.userRepo.save(user);
+
+                /** Add Cookies */
+                Cookie cookie = new Cookie("nickname", userName);
+                cookie.setMaxAge(2592000);
+                response.addCookie(cookie);
+
+                message = "Successful registration!";
+            }
+
+
+            model.addAttribute("message", message);
 
             return "redirect:/";
         }
@@ -78,6 +88,7 @@ public class UserController {
         {
 
             User user = this.userRepo.findByEmail(email);
+
 
             if (email.equals("INVALID_USER") || userID != user.getUserID())
             {
@@ -110,14 +121,51 @@ public class UserController {
             }
         }
 
-    @GetMapping("/movie/top_rated")
-    public String getTopRating (
-            Model model)
-    {
+        @GetMapping("/addmovie")
+        public String startAddMovie (
+                @CookieValue(value = "user", defaultValue = "INVALID_USER") String email)
+        {
+
+            System.out.println(email);
+            User user = this.userRepo.findByEmail(email);
+            if (email.equals("INVALID_USER"))
+            {
+                return "redirect:/";
+            }
+            else {
+                return "addmovie.html";
+            }
+        }
+
+
+        @PostMapping("/addmovie/")
+        public String finishAddMovie (
+                                @RequestParam ("movieId") int movieId,
+                                @CookieValue(value = "user", defaultValue = "INVALID_USER") String email){
+
+            User user = this.userRepo.findByEmail(email);
+            if (email.equals("INVALID_USER"))
+            {
+                return "redirect:/";
+            }
+            else
+            {
+                user.addMovieIds(movieId);
+                this.userRepo.save(user);
+            }
+
+            return "redirect:/getuser/" + user.getUserID();
+        }
+
+        @GetMapping("/movie/top_rated")
+        public String getTopRating (
+               Model model) {
 
 
             return "toprating.html";
-    }
+        }
+
+
 
 
 }

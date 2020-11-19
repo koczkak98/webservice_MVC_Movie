@@ -1,7 +1,10 @@
 package com.moviedb.webservice_MVC_Movie.user.db;
 
 import com.moviedb.webservice_MVC_Movie.user.model.User;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 public interface UserRepository extends Repository <User, Integer> {

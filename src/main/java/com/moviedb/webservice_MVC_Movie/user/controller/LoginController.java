@@ -50,6 +50,7 @@ public class LoginController {
                 /** Valid */
                 Cookie cookie = new Cookie("user", email);
                 response.addCookie(cookie);
+                System.out.println("go to link");
 
                 destinationURL = "redirect:/getuser/" + accounts.get(0).getUserID();
             }

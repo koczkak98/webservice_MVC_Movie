@@ -17,6 +17,10 @@
 		<form action="/logout" method="get" >
 			<input type="submit" value="LogOut" > </input>
 		</form>
+
+		<form th:object="${user}" action="/addmovie" method="get">
+			<input type="submit" value="Add movie" > </input>
+		</form>
 	
 	</body> 
 </html>
