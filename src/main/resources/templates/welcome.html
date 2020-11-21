@@ -26,13 +26,19 @@
         <form action="/signup" method="post">
             <label> Full Name: </label> <input type="text" name="name" > </input>
             <p></p>
-            <label> Nickname: </label> <input type="text" name="userName" > </input>
+            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" oninput="myFunction()" > </input>
             <p></p>
             <label> E-mail adress: </label> <input type="email" name="email" > </input>
             <p></p>
             <label> Password: </label> <input type="password" name="pwd" > </input>
             <input type="submit" value="Signup" > </input>
         </form>
+
+            <script> type="text/javascript"
+
+            function myFunction()
+
+        </script>
 
     </body>
 </html>

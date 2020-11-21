@@ -1,13 +1,11 @@
-package com.moviedb.webservice_MVC_Movie.user.db;
+package com.moviedb.webservice_MVC_Movie.db;
 
-import com.moviedb.webservice_MVC_Movie.user.model.User;
-import org.springframework.data.jpa.repository.Query;
+import com.moviedb.webservice_MVC_Movie.model.user.User;
 import org.springframework.data.repository.Repository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface UserRepository extends Repository <User, Integer> {
+public interface UserRepository extends Repository<User, Integer> {
 
     List<User> findAll();
 

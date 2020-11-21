@@ -1,4 +1,4 @@
-package com.moviedb.webservice_MVC_Movie.user.model;
+package com.moviedb.webservice_MVC_Movie.model.moviedb;
 
 public class Genres {
 

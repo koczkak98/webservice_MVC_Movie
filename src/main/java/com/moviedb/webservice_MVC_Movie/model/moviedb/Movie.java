@@ -1,22 +1,25 @@
-package com.moviedb.webservice_MVC_Movie.user.model;
+package com.moviedb.webservice_MVC_Movie.model.moviedb;
 
 import java.util.List;
 
 public class Movie {
 
-    private String original_title;
+    private String title;
     private String overview;
     private List<Genres> genres;
     private Integer vote_count;
     private double vote_average;
     private double popularity;
 
-    public String getOriginal_title() {
-        return original_title;
+
+    public String getTitle() {
+        return title;
     }
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
+
+    public void setTitle(String title) {
+        this.title = title;
     }
+
     public String getOverview() {
         return overview;
     }

@@ -11,7 +11,7 @@
 		<p th:text="${users.name}" ></p>
 	
 		<p th:each="myMovie : ${myMovies.myMovies}" 
-			th:text="${myMovie.original_title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
+			th:text="${myMovie.title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
 			'  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
 
 		<form action="/logout" method="get" >

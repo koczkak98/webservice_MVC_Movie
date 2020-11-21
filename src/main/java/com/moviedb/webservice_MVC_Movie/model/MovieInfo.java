@@ -1,4 +1,6 @@
-package com.moviedb.webservice_MVC_Movie.user.model;
+package com.moviedb.webservice_MVC_Movie.model;
+
+import com.moviedb.webservice_MVC_Movie.model.moviedb.Movie;
 
 import java.util.ArrayList;
 

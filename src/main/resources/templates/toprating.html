@@ -8,9 +8,9 @@
 
 
 
-        <p th:each="myMovie : ${myMovies.myMovies}"
-           th:text="${myMovie.original_title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
-                    '  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
+        <p th:each="topRating : ${topRating.results}"
+           th:text="${topRating.title} + '-' + ${topRating.overview} + '  -   ' + ${topRating.vote_average} +
+                    '  -   ' + ${topRating.vote_count} + '  -   ' + ${topRating.popularity} "></p>
 
     </body>
 </html>

@@ -1,4 +1,4 @@
-package com.moviedb.webservice_MVC_Movie.user.model;
+package com.moviedb.webservice_MVC_Movie.model.user;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,6 +30,8 @@ public class User {
     @Column(name = "pwd")
     private String pwd;
 
+    @Transient
+    private String nickname;
 
     public User() {
         super();
@@ -87,4 +89,8 @@ public class User {
     }
 
     public void addMovieIds (int movieId){ this.movieIds.add(movieId);}
+
+    public String getNickname() { return nickname; }
+
+    public void setNickname(String nickname) { this.nickname = nickname; }
 }
