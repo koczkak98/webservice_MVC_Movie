@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Login</title>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/style/welcome.css}" />
     </head>
 
     <body>
 
-    <p> Login </p>
+    <h1> Login </h1>
 
-        <form action="/" method="post">
+        <form action="/" method="post" name="login" >
 
             <label> E-mail adress: </label> <input type="email" name="email" > </input>
             <p></p>
@@ -16,12 +19,13 @@
             <input type="submit" value="Login" > </input>
         </form>
     <p th:text="${message}" ></p>
-    <p>    </p>
-    <p>     </p>
-    <p>     </p>
-    <p>     </p>
+
+    <br />
+    <br />
+    <br />
+
     <p>-------------------------------------------------    </p>
-    <p> Or SingUp </p>
+    <h1> Or SingUp </h1>
 
         <form action="/signup" method="post">
             <label> Full Name: </label> <input type="text" name="name" > </input>
