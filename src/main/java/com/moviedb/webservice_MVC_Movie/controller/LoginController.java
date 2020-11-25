@@ -104,9 +104,9 @@ public class LoginController {
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30);
                 System.out.println(session.getId());
+
                 /** 2. */
                 session.setAttribute("user", email);
-
                 message = "Valid";
 
                 destinationURL = "redirect:/getuser/" + accounts.get(0).getUserID();

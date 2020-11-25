@@ -1,12 +1,18 @@
-<!DOCTYPE html> 
-<html> 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
 	<head> 
-		<title>My Favourite Movies</title>
+		<title> Movies </title>
 	</head> 
 	
 	<body>
+		<script>
 
-		<p th:text="${nickname}" ></p>
+			if ( localStorage.getItem("userName") != null )
+			{
+				alert( "Hi " + localStorage.getItem("userName") + "!" );
+			}
+
+		</script>
 
 		<p th:text="${users.name}" ></p>
 	
@@ -14,13 +20,38 @@
 			th:text="${myMovie.title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
 			'  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
 
-		<form action="/logout" method="get" >
-			<input type="submit" value="LogOut" > </input>
+
+		<!-- CHANGE NICKNAME -->
+		<form action="/getuser/"+${users.userID} method="post" >
+			<label> Nickname: </label> <input id="nickNameField" type="text" name="userName" oninput="changeNickname()" > </input>
+			<input type="submit" value="Change" > </input>
 		</form>
 
+		<!-- LOGOUT -->
+		<form action="/logout" method="get" >
+			<input type="submit" value="LogOut" onclick="deleteNickname()" > </input>
+		</form>
+
+		<!-- ADDMOVIE -->
 		<form th:object="${user}" action="/addmovie" method="get">
 			<input type="submit" value="Add movie" > </input>
 		</form>
+
+		<script>
+			function deleteNickname()
+			{
+				var nickNameField = document.getElementById("nickNameField");
+				localStorage.removeItem("userName");
+			}
+		</script>
+
+		<script>
+		function changeNickname()
+		{
+			var nickNameField = document.getElementById("nickNameField");
+            localStorage.setItem("userName", nickNameField.value);
+		}
+		</script>
 	
 	</body> 
 </html>

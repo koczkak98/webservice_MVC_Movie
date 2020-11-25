@@ -28,7 +28,6 @@ public class UserController {
         public String getUserMovies(
                 @PathVariable("userID") int userID,
                 @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
-                @CookieValue(value = "nickname", defaultValue = "INVALID_USER") String nickname,
                 HttpServletRequest request,
                 Model model) throws SQLException
         {
@@ -81,7 +80,6 @@ public class UserController {
 
                 model.addAttribute("myMovies", mi);
                 model.addAttribute("users", user);
-                model.addAttribute("nickname", "Welcome back " + nickname + " :) !");
 
 
                 return "mymovies.html";

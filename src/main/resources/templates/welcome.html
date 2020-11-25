@@ -30,7 +30,7 @@
         <form action="/signup" method="post">
             <label> Full Name: </label> <input type="text" name="name" > </input>
             <p></p>
-            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" oninput="myFunction()" > </input>
+            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" oninput="nicknameAdd()" > </input>
             <p></p>
             <label> E-mail adress: </label> <input type="email" name="email" > </input>
             <p></p>
@@ -40,7 +40,15 @@
 
             <script> type="text/javascript"
 
-            function myFunction()
+            var nName = documentum.document.getElementById("nickNameField");
+            nName.value = localStorage.getItem("userName");
+            alert(nName.value);
+
+            function nicknameAdd()
+            {
+                var nickNameField = document.getElementById("nickNameField");
+                localStorage.setItem("userName", nickNameField.value);
+            }
 
         </script>
 
