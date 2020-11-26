@@ -4,19 +4,19 @@
         <meta charset="UTF-8">
         <title>Login</title>
         <link rel="stylesheet" type="text/css" media="all"
-              th:href="@{/style/welcome.css}" />
+              th:href="@{/style/style.css}" />
     </head>
 
     <body>
 
     <h1> Login </h1>
 
-        <form action="/" method="post" name="login" >
+        <form id="login" action="/" method="post" name="login" >
 
             <label> E-mail adress: </label> <input type="email" name="email" > </input>
             <p></p>
             <label>Password: </label> <input type="password" name="pwd" > </input>
-            <input type="submit" value="Login" > </input>
+            <input type="submit" id="logInSend" value="Login" onclick="logIn()" > </input>
         </form>
     <p th:text="${message}" ></p>
 
@@ -38,16 +38,16 @@
             <input type="submit" value="Signup" > </input>
         </form>
 
-            <script> type="text/javascript"
+        <script> type="text/javascript"
 
-            var nName = documentum.document.getElementById("nickNameField");
-            nName.value = localStorage.getItem("userName");
+           var nName = documentum.document.getElementById("nickNameField");
+           nName.value = localStorage.getItem("userName");
 
-            function nicknameAdd()
-            {
-                var nickNameField = document.getElementById("nickNameField");
-                localStorage.setItem("userName", nickNameField.value);
-            }
+           function nicknameAdd()
+           {
+               var nickNameField = document.getElementById("nickNameField");
+               localStorage.setItem("userName", nickNameField.value);
+           }
 
         </script>
 

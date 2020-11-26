@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My Favourite Movies</title>
+        <meta charset="UTF-8">
+        <title> Top Rating Movies </title>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/style/style.css}" />
     </head>
 
     <body>
 
+        <p id ="topRatingMovies" th:each="movies : ${movies.results}"
+           th:text="${movies.title} + '------------->' + ${movies.overview} "></p>
 
 
-        <p th:each="topRating : ${topRating.results}"
-           th:text="${topRating.title} + '-' + ${topRating.overview} + '  -   ' + ${topRating.vote_average} +
-                    '  -   ' + ${topRating.vote_count} + '  -   ' + ${topRating.popularity} "></p>
 
     </body>
 </html>

@@ -2,7 +2,7 @@ package com.moviedb.webservice_MVC_Movie.model.moviedb;
 
 import java.util.List;
 
-public class TopRating {
+public class Movies {
 
     private List<Movie> results;
 

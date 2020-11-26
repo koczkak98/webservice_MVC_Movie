@@ -1,9 +1,9 @@
 package com.moviedb.webservice_MVC_Movie.controller;
 
 import com.moviedb.webservice_MVC_Movie.db.UserRepository;
-import com.moviedb.webservice_MVC_Movie.model.moviedb.Movie;
 import com.moviedb.webservice_MVC_Movie.model.MovieInfo;
-import com.moviedb.webservice_MVC_Movie.model.moviedb.TopRating;
+import com.moviedb.webservice_MVC_Movie.model.moviedb.Movie;
+import com.moviedb.webservice_MVC_Movie.model.moviedb.Movies;
 import com.moviedb.webservice_MVC_Movie.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,6 +39,7 @@ public class UserController {
             try {
 
                 String var = session.getAttribute("user").toString();
+                System.out.println(var);
                 user = this.userRepo.findByEmail(var);
             }
             catch (NullPointerException e)
@@ -80,6 +81,7 @@ public class UserController {
 
                 model.addAttribute("myMovies", mi);
                 model.addAttribute("users", user);
+
 
 
                 return "mymovies.html";
@@ -125,15 +127,13 @@ public class UserController {
             String var = session.getAttribute("user").toString();
             User user = this.userRepo.findByEmail(var);
 
-            String destinationURL = "";
-
             if (session == null)
             {
-                destinationURL = "redirect:/";
+                return "redirect:/";
             }
             else if (!sessionId.equals(session.getId()))
             {
-                destinationURL = "redirect:/";
+                return "redirect:/";
             }
             else
             {
@@ -144,15 +144,24 @@ public class UserController {
             return "redirect:/getuser/" + user.getUserID();
         }
 
+        @GetMapping("/searchmovie")
+        public String searchMovieByTitle (
+                                        @RequestParam("movieTitle") String movieTitle)
+        {
+
+
+            return "";
+        }
+
         @GetMapping("/movie/top_rated")
         public String getTopRating (
                Model model) {
 
             RestTemplate restTemplate = new RestTemplate();
 
-            TopRating topRating = restTemplate.getForObject("https://api.themoviedb.org/3/movie/top_rated?api_key=05e00aec1b6318f6f5a4702d18a8f725", TopRating.class);
+            Movies movies = restTemplate.getForObject("https://api.themoviedb.org/3/movie/top_rated?api_key=05e00aec1b6318f6f5a4702d18a8f725", Movies.class);
 
-            model.addAttribute("topRating", topRating);
+            model.addAttribute("topRating", movies);
 
             return "toprating.html";
         }
