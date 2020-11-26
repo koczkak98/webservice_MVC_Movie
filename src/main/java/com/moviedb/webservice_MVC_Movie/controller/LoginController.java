@@ -65,24 +65,50 @@ public class LoginController {
 
         if (isItTrue == true) {
 
+            System.out.println("SignUp...");
+
             /** email */
             byte[] encryptEmail = encrypt(email);
+            System.out.println("encryptEmail[]: ");
+            for(int i = 0; i < encryptEmail.length; i++)
+            {
+                System.out.print(encryptEmail[i]);
+            }
+            System.out.println();
             String encryptEmailString = new String(encryptEmail);
+            System.out.println("encryptEmailString: " + encryptEmailString);
 
             /** pwd */
             byte[] encryptPwd = encrypt(pwd);
+            System.out.println("encryptPwd[]: ");
+            for(int i = 0; i < encryptPwd.length; i++)
+            {
+                System.out.print(encryptPwd[i]);
+            }
+            System.out.println();
+
             String encryptPwdString = new String(encryptPwd);
+            System.out.println("encryptPwdString: " + encryptPwdString);
+
 
             /** name */
             byte[] encryptName = encrypt(name);
+            System.out.println("encryptName[]: ");
+            for(int i = 0; i < encryptName.length; i++)
+            {
+                System.out.print(encryptName[i]);
+            }
+            System.out.println();
+
             String encryptNameString = new String(encryptName);
+            System.out.println("encryptNameString: " + encryptNameString);
 
 
             /** Update user */
             User user = new User();
-            user.setEmail(encryptEmailString, encryptEmail);
-            user.setPwd(encryptPwdString, encryptPwd);
-            user.setName(encryptNameString, encryptName);
+            user.setEmail(encryptEmailString);
+            user.setPwd(encryptPwdString);
+            user.setName(encryptNameString);
 
             /** Save DB */
             this.userRepo.save(user);
@@ -104,6 +130,8 @@ public class LoginController {
                          HttpServletResponse response,
                          Model model){
 
+        System.out.println("login");
+
         String message = "";
         String destinationURL = "";
 
@@ -112,20 +140,67 @@ public class LoginController {
         try {
 
             /** email */
+
             byte [] encryptEmail = encrypt(email);
             String encryptEmailString = new String (encryptEmail);
-
-            System.out.println("original " + email);
-            System.out.println("encrypt[] " + encryptEmail);
-            System.out.println("encrypt to string " + encryptEmailString);
 
             /** pwd */
             byte [] encryptPwd = encrypt(pwd);
             String encryptPwdString = new String (encryptPwd);
 
+             /** check user */
             accounts = this.userRepo.findByEmailAndPwd(encryptEmailString, encryptPwdString);
+            /** */
+
+
+            System.out.println("email: ");
+            System.out.println("encryptEmail[] : ");
+            for(int i = 0; i < encryptEmail.length; i++)
+            {
+                System.out.print(encryptEmail[i]);
+            }
+
             System.out.println();
-            System.out.println(decrypt(accounts.get(0).getEncryptName()) + " login.");
+            System.out.println("encryptEmailString: " + encryptEmailString);
+            byte[] decryptEmail = accounts.get(0).getEmail().getBytes();
+            System.out.println();
+
+            System.out.println("after db Email[] : ");
+            for(int i = 0; i < decryptEmail.length; i++)
+            {
+                System.out.print(decryptEmail[i]);
+            }
+
+            System.out.println();
+
+            System.out.println("after db pwd String: " + accounts.get(0).getEmail());
+
+            System.out.println("-------------------------------------------");
+
+            System.out.println("pwd: ");
+
+            System.out.println("encryptPwd[] : ");
+            for(int i = 0; i < encryptPwd.length; i++)
+            {
+                System.out.print(encryptPwd[i]);
+            }
+            System.out.println();
+            System.out.println("encryptPwdString: " + encryptPwdString);
+
+            byte [] decryptPwd = accounts.get(0).getPwd().getBytes();
+
+            System.out.println("after db Pwd[] : ");
+            for(int i = 0; i < decryptPwd.length; i++)
+            {
+                System.out.print(decryptPwd[i]);
+            }
+            System.out.println();
+            System.out.println("after db pwd String: " + accounts.get(0).getPwd());
+            
+
+            System.out.println("-------------------------------------------");
+
+            //System.out.println(accounts.get(0).getName().getBytes());
             if(accounts.size() == 1)
             {
                 /** Valid */

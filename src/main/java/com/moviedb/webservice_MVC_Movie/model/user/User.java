@@ -26,22 +26,16 @@ public class User {
     @Column
     private String name;
 
-    @Transient
-    private byte [] encryptName;
 
 
     @Column(name = "email")
     private String email;
 
-    @Transient
-    private byte [] encryptEmail;
 
 
     @Column(name = "pwd")
     private String pwd;
 
-    @Transient
-    private byte [] encryptPwd;
 
     public User() {
         super();
@@ -73,18 +67,9 @@ public class User {
         return name;
     }
 
-    public void setName(String name, byte[] EncryptName) {
+    public void setName(String name) {
         this.name = name;
-        this.setEncryptName(EncryptName);
-    }
 
-    public byte[] getEncryptName() {
-        return encryptName;
-    }
-
-    public void setEncryptName(byte[] encryptName) {
-        System.out.println( "setEncryptName() --- >" + encryptName);
-        this.encryptName = encryptName;
     }
 
 
@@ -92,17 +77,8 @@ public class User {
         return email;
     }
 
-    public void setEmail(String email, byte[] EncryptEmail) {
+    public void setEmail(String email) {
         this.email = email;
-        this.setEncryptEmail(EncryptEmail);
-    }
-
-    public byte[] getEncryptEmail() {
-        return encryptEmail;
-    }
-
-    public void setEncryptEmail(byte[] encryptEmail) {
-        this.encryptEmail = encryptEmail;
     }
 
 
@@ -110,18 +86,10 @@ public class User {
         return pwd;
     }
 
-    public void setPwd(String pwd, byte[] EncryptPwd) {
+    public void setPwd(String pwd) {
         this.pwd = pwd;
-        this.setEncryptPwd(EncryptPwd);
     }
 
-    public byte[] getEncryptPwd() {
-        return encryptPwd;
-    }
-
-    public void setEncryptPwd(byte[] encryptPwd) {
-        this.encryptPwd = encryptPwd;
-    }
 
 
     /** MovieIDS */
