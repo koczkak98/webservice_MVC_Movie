@@ -2,6 +2,7 @@ package com.moviedb.webservice_MVC_Movie.controller;
 
 import com.moviedb.webservice_MVC_Movie.db.UserRepository;
 import com.moviedb.webservice_MVC_Movie.model.user.User;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -67,42 +67,18 @@ public class LoginController {
 
             System.out.println("SignUp...");
 
-            /** email */
-            byte[] encryptEmail = encrypt(email);
-            System.out.println("encryptEmail[]: ");
-            for(int i = 0; i < encryptEmail.length; i++)
-            {
-                System.out.print(encryptEmail[i]);
-            }
-            System.out.println();
-            String encryptEmailString = new String(encryptEmail);
-            System.out.println("encryptEmailString: " + encryptEmailString);
+            /** EMAIL */
+            System.out.println("EMAIL SIGNUP...");
+            String encryptEmailString = encrypt(email);
+            System.out.println("encryptEmailString = " + encryptEmailString);
 
-            /** pwd */
-            byte[] encryptPwd = encrypt(pwd);
-            System.out.println("encryptPwd[]: ");
-            for(int i = 0; i < encryptPwd.length; i++)
-            {
-                System.out.print(encryptPwd[i]);
-            }
-            System.out.println();
+            /** PWD */
+            System.out.println("PWD SIGNUP...");
+            String encryptPwdString = encrypt(pwd);
+            System.out.println("encryptPwdString = " + encryptPwdString);
 
-            String encryptPwdString = new String(encryptPwd);
-            System.out.println("encryptPwdString: " + encryptPwdString);
-
-
-            /** name */
-            byte[] encryptName = encrypt(name);
-            System.out.println("encryptName[]: ");
-            for(int i = 0; i < encryptName.length; i++)
-            {
-                System.out.print(encryptName[i]);
-            }
-            System.out.println();
-
-            String encryptNameString = new String(encryptName);
-            System.out.println("encryptNameString: " + encryptNameString);
-
+            /** NAME */
+            String encryptNameString = encrypt(name);
 
             /** Update user */
             User user = new User();
@@ -112,11 +88,8 @@ public class LoginController {
 
             /** Save DB */
             this.userRepo.save(user);
-
-
             message = "Successful registration!";
         }
-
 
         model.addAttribute("message", message);
 
@@ -139,75 +112,29 @@ public class LoginController {
         /** Check User */
         try {
 
-            /** email */
+            /** EMAIL */
+            System.out.println("EMAIL LOGIN...");
+            String encryptEmailString = encrypt(email);
+            System.out.println("encryptEmailString = " + encryptEmailString);
+            System.out.println("decrypt encryptEmailString: " + decrypt(encryptEmailString.getBytes()));
 
-            byte [] encryptEmail = encrypt(email);
-            String encryptEmailString = new String (encryptEmail);
+            /** PWD */
+            System.out.println("PWD LOGIN...");
+            String encryptPwdString = encrypt(pwd);
+            System.out.println("encryptPwdString = " + encryptPwdString);
+            System.out.println("decrypt encryptPwdString: " + decrypt(encryptPwdString.getBytes()));
 
-            /** pwd */
-            byte [] encryptPwd = encrypt(pwd);
-            String encryptPwdString = new String (encryptPwd);
-
-             /** check user */
+            /** check user */
             accounts = this.userRepo.findByEmailAndPwd(encryptEmailString, encryptPwdString);
             /** */
 
-
-            System.out.println("email: ");
-            System.out.println("encryptEmail[] : ");
-            for(int i = 0; i < encryptEmail.length; i++)
-            {
-                System.out.print(encryptEmail[i]);
-            }
-
-            System.out.println();
-            System.out.println("encryptEmailString: " + encryptEmailString);
-            byte[] decryptEmail = accounts.get(0).getEmail().getBytes();
-            System.out.println();
-
-            System.out.println("after db Email[] : ");
-            for(int i = 0; i < decryptEmail.length; i++)
-            {
-                System.out.print(decryptEmail[i]);
-            }
-
-            System.out.println();
-
-            System.out.println("after db pwd String: " + accounts.get(0).getEmail());
-
-            System.out.println("-------------------------------------------");
-
-            System.out.println("pwd: ");
-
-            System.out.println("encryptPwd[] : ");
-            for(int i = 0; i < encryptPwd.length; i++)
-            {
-                System.out.print(encryptPwd[i]);
-            }
-            System.out.println();
-            System.out.println("encryptPwdString: " + encryptPwdString);
-
-            byte [] decryptPwd = accounts.get(0).getPwd().getBytes();
-
-            System.out.println("after db Pwd[] : ");
-            for(int i = 0; i < decryptPwd.length; i++)
-            {
-                System.out.print(decryptPwd[i]);
-            }
-            System.out.println();
-            System.out.println("after db pwd String: " + accounts.get(0).getPwd());
-            
-
-            System.out.println("-------------------------------------------");
-
-            //System.out.println(accounts.get(0).getName().getBytes());
             if(accounts.size() == 1)
             {
                 /** Valid */
                 /** 1. */
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(30);
-                System.out.println(session.getId());
+                System.out.println("SESSIONID: " + session.getId());
 
                 /** 2. */
                 session.setAttribute("user", encryptEmailString);
@@ -239,9 +166,10 @@ public class LoginController {
     }
 
 
-    public byte[] encrypt(String toBeEncrypted) {
+    public String encrypt(String toBeEncrypted) {
 
-        byte[] encrypted = null;
+        String encryptedString = null;
+        byte[] encryptedByteArray = null;
 
         try {
             IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
@@ -250,14 +178,15 @@ public class LoginController {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
 
-            encrypted = cipher.doFinal(toBeEncrypted.getBytes());
+            encryptedByteArray = cipher.doFinal(toBeEncrypted.getBytes());
+            encryptedString = Base64.encodeBase64String(encryptedByteArray);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        return encrypted;
+        return encryptedString;
     }
 
     public String decrypt(byte[] encrypted) {
@@ -271,9 +200,7 @@ public class LoginController {
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
             cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 
-            System.out.println( "encrypted in decrypt: " + encrypted);
-            original = new String(cipher.doFinal(encrypted));
-            System.out.println("original in decrypt: " + original);
+            original = new String(cipher.doFinal(Base64.decodeBase64(encrypted)));
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -288,6 +215,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
 
+        /**
         Cookie[] cookies = request.getCookies();
         for(int i = 0; i< cookies.length; i++)
         {
@@ -297,10 +225,31 @@ public class LoginController {
                 response.addCookie(cookie);
             }
         }
+         */
 
-        request.getSession(false).invalidate();
+        String link = "";
 
-        return "welcome.html";
+        if(request.getSession(false) !=null) {
+            try
+            {
+                request.getSession(false).removeAttribute("logonSessData");
+                request.getSession(false).invalidate();
+                String pageToForward = request.getContextPath();
+                response.sendRedirect(pageToForward);
+            }
+            catch (Exception e)
+            {
+                link = "error.html";
+            }
+            }
+
+        else {
+
+            link = "welcome.html";
+        }
+
+
+        return link;
     }
 
 

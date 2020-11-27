@@ -53,7 +53,7 @@ public class UserController {
                 System.out.println("... Null ...");
                 return "redirect:/";
             }
-            else if (!sessionId.equals(session.getId()))
+            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())) )
             {
                 return "redirect:/";
             }
@@ -104,7 +104,7 @@ public class UserController {
             {
                 destinationURL = "redirect:/";
             }
-            else if (!sessionId.equals(session.getId()))
+            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())) )
             {
                 destinationURL = "redirect:/";
             }
@@ -131,7 +131,7 @@ public class UserController {
             {
                 return "redirect:/";
             }
-            else if (!sessionId.equals(session.getId()))
+            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())) )
             {
                 return "redirect:/";
             }
