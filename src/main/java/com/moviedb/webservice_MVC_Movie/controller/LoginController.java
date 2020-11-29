@@ -2,7 +2,6 @@ package com.moviedb.webservice_MVC_Movie.controller;
 
 import com.moviedb.webservice_MVC_Movie.db.UserRepository;
 import com.moviedb.webservice_MVC_Movie.model.user.User;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -42,6 +38,7 @@ public class LoginController {
                           HttpServletResponse response,
                           Model model)
     {
+        Security security = new Security();
         String message = "";
         boolean isItTrue = true;
 
@@ -69,16 +66,16 @@ public class LoginController {
 
             /** EMAIL */
             System.out.println("EMAIL SIGNUP...");
-            String encryptEmailString = encrypt(email);
+            String encryptEmailString = security.encrypt(email);
             System.out.println("encryptEmailString = " + encryptEmailString);
 
             /** PWD */
             System.out.println("PWD SIGNUP...");
-            String encryptPwdString = encrypt(pwd);
+            String encryptPwdString = security.encrypt(pwd);
             System.out.println("encryptPwdString = " + encryptPwdString);
 
             /** NAME */
-            String encryptNameString = encrypt(name);
+            String encryptNameString = security.encrypt(name);
 
             /** Update user */
             User user = new User();
@@ -105,6 +102,7 @@ public class LoginController {
 
         System.out.println("login");
 
+        Security security = new Security();
         String message = "";
         String destinationURL = "";
 
@@ -114,15 +112,15 @@ public class LoginController {
 
             /** EMAIL */
             System.out.println("EMAIL LOGIN...");
-            String encryptEmailString = encrypt(email);
+            String encryptEmailString = security.encrypt(email);
             System.out.println("encryptEmailString = " + encryptEmailString);
-            System.out.println("decrypt encryptEmailString: " + decrypt(encryptEmailString.getBytes()));
+            System.out.println("decrypt encryptEmailString: " + security.decrypt(encryptEmailString.getBytes()));
 
             /** PWD */
             System.out.println("PWD LOGIN...");
-            String encryptPwdString = encrypt(pwd);
+            String encryptPwdString = security.encrypt(pwd);
             System.out.println("encryptPwdString = " + encryptPwdString);
-            System.out.println("decrypt encryptPwdString: " + decrypt(encryptPwdString.getBytes()));
+            System.out.println("decrypt encryptPwdString: " + security.decrypt(encryptPwdString.getBytes()));
 
             /** check user */
             accounts = this.userRepo.findByEmailAndPwd(encryptEmailString, encryptPwdString);
@@ -166,66 +164,8 @@ public class LoginController {
     }
 
 
-    public String encrypt(String toBeEncrypted) {
-
-        String encryptedString = null;
-        byte[] encryptedByteArray = null;
-
-        try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
-
-            encryptedByteArray = cipher.doFinal(toBeEncrypted.getBytes());
-            encryptedString = Base64.encodeBase64String(encryptedByteArray);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return encryptedString;
-    }
-
-    public String decrypt(byte[] encrypted) {
-
-        String original = null;
-
-        try {
-            IvParameterSpec iv = new IvParameterSpec(initVector.getBytes("UTF-8"));
-            SecretKeySpec skeySpec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
-
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
-
-            original = new String(cipher.doFinal(Base64.decodeBase64(encrypted)));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return original;
-    }
-
-
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
-
-        /**
-        Cookie[] cookies = request.getCookies();
-        for(int i = 0; i< cookies.length; i++)
-        {
-            Cookie cookie = cookies[i];
-            if (cookie.getName().equals("user")){
-                cookie.setMaxAge(0);
-                response.addCookie(cookie);
-            }
-        }
-         */
 
         String link = "";
 

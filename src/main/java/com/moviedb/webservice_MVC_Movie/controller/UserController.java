@@ -32,6 +32,7 @@ public class UserController {
                 Model model) throws SQLException
         {
 
+            Security security = new Security();
             HttpSession session = request.getSession(false);
             User user = new User();
             System.out.println("get/userid");
@@ -78,6 +79,7 @@ public class UserController {
                     mi.addMovie(movie);
                 }
 
+                user.setName(security.decrypt(user.getName().getBytes()));
 
                 model.addAttribute("myMovies", mi);
                 model.addAttribute("users", user);

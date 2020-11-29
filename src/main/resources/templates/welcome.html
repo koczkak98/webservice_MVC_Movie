@@ -30,18 +30,17 @@
         <form action="/signup" method="post">
             <label> Full Name: </label> <input type="text" name="name" > </input>
             <p></p>
-            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" oninput="nicknameAdd()" > </input>
+            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" > </input>
             <p></p>
             <label> E-mail adress: </label> <input type="email" name="email" > </input>
             <p></p>
             <label> Password: </label> <input type="password" name="pwd" > </input>
-            <input type="submit" value="Signup" > </input>
+            <input type="submit" value="Signup" onclick="nicknameAdd()" > </input>
         </form>
 
-        <script> type="text/javascript"
+        <script type="text/javascript" >
 
-           var nName = documentum.document.getElementById("nickNameField");
-           nName.value = localStorage.getItem("userName");
+           localStorage.removeItem("userName");
 
            function nicknameAdd()
            {

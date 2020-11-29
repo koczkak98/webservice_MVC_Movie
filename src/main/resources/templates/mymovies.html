@@ -29,7 +29,7 @@
 
 		<!-- LOGOUT -->
 		<form action="/logout" method="get" >
-			<input type="submit" value="LogOut" onclick="deleteNickname()" > </input>
+			<input type="submit" value="LogOut" > </input>
 		</form>
 
 		<!-- ADDMOVIE -->
@@ -37,13 +37,6 @@
 			<input type="submit" value="Add movie" > </input>
 		</form>
 
-		<script>
-			function deleteNickname()
-			{
-				var nickNameField = document.getElementById("nickNameField");
-				localStorage.removeItem("userName");
-			}
-		</script>
 
 		<script>
 		function changeNickname()
