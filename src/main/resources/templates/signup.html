@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/style/style.css}" />
+    </head>
+
+    <body>
+
+        <form id="signUp" action="/signup" method="post">
+            <label> Full Name: </label> <input type="text" name="name" >  </input>
+            <p></p>
+            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" > </input>
+            <p></p>
+            <label> E-mail adress: </label> <input type="email" name="email" > </input>
+            <p></p>
+            <label> Password: </label> <input type="password" name="pwd" > </input>
+            <input type="submit" value="Signup" onclick="nicknameAdd()" > </input>
+        </form>
+
+        <script type="text/javascript" >
+
+
+                   function nicknameAdd()
+                   {
+                       var nickNameField = document.getElementById("nickNameField");
+                       localStorage.setItem("userName", nickNameField.value);
+                   }
+
+                </script>
+
+    </body>
+</html>

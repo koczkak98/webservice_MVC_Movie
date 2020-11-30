@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/html">
 	<head> 
 		<title> Movies </title>
+		<link rel="stylesheet" type="text/css" media="all"
+			  th:href="@{/style/style.css}" />
 	</head> 
 	
 	<body>
@@ -20,11 +22,20 @@
 			th:text="${myMovie.title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
 			'  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
 
+		<p th:each="hitsMovie: ${hits}"
+			th:text="${hitsMovie.title} + ' - ' + ${hitsMovie.overview}" ></p>
+
+
+		<!-- SEARCH MOVIE -->
+		<form >
+			<label> Enter the title of the movie: </label>  <input id="movieTitleField" type="text" name="movieTitle" onchange="searchMovieTitle()" > </input>
+			<input type="submit" value="Search" > </input>
+		</form>
 
 		<!-- CHANGE NICKNAME -->
 		<form >
-			<label> Nickname: </label> <input id="nickNameField" type="text" name="userName" oninput="changeNickname()" > </input>
-			<input type="submit" value="Change" > </input>
+			<label> Nickname: </label> <input id="nickNameField" type="text" name="userName" > </input>
+			<input type="submit" value="Change" onclick="changeNickname()"> </input>
 		</form>
 
 		<!-- LOGOUT -->
@@ -39,11 +50,22 @@
 
 
 		<script>
+
+		var movieTitleFieldGet = document.getElementById("movieTitleField");
+        movieTitleFieldGet.value = sessionStorage.getItem("movieTitleFieldGet");
+
 		function changeNickname()
 		{
 			var nickNameField = document.getElementById("nickNameField");
             localStorage.setItem("userName", nickNameField.value);
 		}
+
+		function searchMovieTitle()
+		{
+			var movieTitleField = document.getElementById("movieTitleField");
+            sessionStorage.setItem("movieTitle", movieTitleField.value);
+		}
+
 		</script>
 
 

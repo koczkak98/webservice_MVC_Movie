@@ -148,11 +148,50 @@ public class UserController {
 
         @GetMapping("/searchmovie")
         public String searchMovieByTitle (
-                                        @RequestParam("movieTitle") String movieTitle)
+                                        @RequestParam("movieTitle") String movieTitle,
+                                        HttpServletRequest request,
+                                        Model model)
         {
 
+            HttpSession session = request.getSession(false);
+            String var = session.getAttribute("user").toString();
+            User user = this.userRepo.findByEmail(var);
 
-            return "";
+
+            MovieInfo mi = new MovieInfo(user.getUserID());
+            List<Integer> myMovieIDs = user.getMovieIds();
+
+            RestTemplate restTemplate = new RestTemplate();
+            for (int idx = 0; idx < myMovieIDs.size(); idx++) {
+                Movie movie = restTemplate.getForObject("https://api.themoviedb.org/3/movie/" + myMovieIDs.get(idx) + "?api_key=05e00aec1b6318f6f5a4702d18a8f725", Movie.class);
+
+                mi.addMovie(movie);
+            }
+
+            int counter = 0;
+            String message = "";
+            Movie resultMovie = null;
+            for (int i = 0; i < mi.getMyMovies().size(); i++)
+            {
+                if (movieTitle.contains(mi.getMyMovies().get(i).getTitle()))
+                {
+                    counter++;
+                    resultMovie = mi.getMyMovies().get(i);
+                }
+            }
+
+            if (counter > 1)
+            {
+                message = "Unsuccessful!";
+            }
+
+            System.out.println(resultMovie);
+            System.out.println(message);
+
+            model.addAttribute("hits", resultMovie);
+            model.addAttribute("message", message);
+
+            return "mymovies.html";
         }
 
         @GetMapping("/movie/top_rated")

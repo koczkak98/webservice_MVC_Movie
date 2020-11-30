@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/style/style.css}" />
+    </head>
+
+    <body>
+
+    <h1> Login </h1>
+
+        <form id="login" action="/" method="post" name="login" >
+
+            <label> E-mail adress: </label> <input type="email" name="email" > </input>
+            <p></p>
+            <label>Password: </label> <input type="password" name="pwd" > </input>
+            <input type="submit" id="logInSend" value="Login" onclick="logIn()" > </input>
+        </form>
+    <p th:text="${message}" ></p>
+
+    <br />
+    <br />
+    <br />
+
+    <p><a href="/signup">You haven't got a accounts yet? You can create one! </a></p>
+
+        <script type="text/javascript" >
+
+           localStorage.removeItem("userName");
+
+        </script>
+
+    </body>
+</html>

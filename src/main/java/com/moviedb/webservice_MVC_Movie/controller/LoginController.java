@@ -27,11 +27,17 @@ public class LoginController {
     @GetMapping("/")
     public String welcome() {
 
-        return "welcome.html";
+        return "login.html";
+    }
+
+    @GetMapping("/signup")
+    public String startSignup ()
+    {
+        return "signup.html";
     }
 
     @PostMapping("/signup")
-    public String singUp (@RequestParam("name") String name,
+    public String finishSignUp (@RequestParam("name") String name,
                           @RequestParam("userName") String userName,
                           @RequestParam("email") String email,
                           @RequestParam("pwd") String pwd,
@@ -47,6 +53,11 @@ public class LoginController {
         if (name.equals("") || userName.equals("")
                 || email.equals("") || pwd.equals("")) {
 
+            isItTrue = false;
+            message = "Some fields are empty!";
+        }
+        if (pwd.length() < 8)
+        {
             isItTrue = false;
             message = "Some fields are empty!";
         }
@@ -144,18 +155,18 @@ public class LoginController {
             {
                 /** Invalid */
                 message = "Invalid";
-                destinationURL = "welcome.html";
+                destinationURL = "login.html";
             }
         }
         catch (IndexOutOfBoundsException e)
         {
             message = "Invalid";
-            destinationURL = "welcome.html";
+            destinationURL = "login.html";
         }
         catch (Exception e)
         {
             message = "Invalid";
-            destinationURL = "welcome.html";
+            destinationURL = "login.html";
         }
 
         model.addAttribute("message", message);
@@ -185,7 +196,7 @@ public class LoginController {
 
         else {
 
-            link = "welcome.html";
+            link = "login.html";
         }
 
 

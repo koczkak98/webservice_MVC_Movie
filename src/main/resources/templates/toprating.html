@@ -10,9 +10,7 @@
     <body>
 
         <p id ="topRatingMovies" th:each="movies : ${movies.results}"
-           th:text="${movies.title} + '------------->' + ${movies.overview} "></p>
-
-
+           th:text="${movies.title}" ></p>
 
     </body>
 </html>

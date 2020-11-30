@@ -9,6 +9,17 @@ body {
     margin-right: 10%;
 }
 
+/* SignUp */
+
+#signUp
+{
+    position: relative;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    margin-right: 150px;
+    margin-left: 80px;
+}
+
 h1 {
   color: gray;
 }
