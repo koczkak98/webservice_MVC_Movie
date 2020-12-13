@@ -18,18 +18,21 @@
             <input type="submit" value="Signup" > </input>
         </form>
 
-    <script>
+        <p th:text="${message}" ></p>
 
-        var pwdField = document.getElementById("pwdField");
-        var strLength = pwdField.value.length;
+        <script>
 
         function pwdLength()
         {
+        var pwdFieldGet = document.getElementById("pwdField");
+        var strLength = pwdFieldGet.value.length;
             if ( strLength < 8 )
             {
-                var pwdField = document.getElementById("pwdField");
-                var strLength = pwdField.value.length;
-                pwdField.style.color = "red";
+                pwdFieldGet.style.color = 'red';
+            }
+            else
+            {
+                pwdFieldGet.style.color = 'black';
             }
 
         }

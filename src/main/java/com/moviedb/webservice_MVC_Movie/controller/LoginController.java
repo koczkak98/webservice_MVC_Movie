@@ -44,6 +44,7 @@ public class LoginController {
     {
         System.out.println("finishSignUp");
         Security security = new Security();
+        String returnLink = "";
         String message = "";
         boolean isItTrue = true;
 
@@ -95,11 +96,16 @@ public class LoginController {
             /** Save DB */
             this.userRepo.save(user);
             message = "Successful registration!";
+            returnLink = "redirect:/";
+        }
+        else
+        {
+            returnLink = "redirect:/signup";
         }
 
         model.addAttribute("message", message);
 
-        return "redirect:/";
+        return returnLink;
     }
 
     @PostMapping("/")
@@ -140,7 +146,7 @@ public class LoginController {
                 /** Valid */
                 /** 1. */
                 HttpSession session = request.getSession();
-                //session.setMaxInactiveInterval(30);
+                session.setMaxInactiveInterval(30);
                 System.out.println("SESSIONID: " + session.getId());
 
                 /** 2. */
@@ -175,17 +181,23 @@ public class LoginController {
 
 
     @GetMapping("/logout")
-    public String startLogout(HttpServletRequest request, HttpServletResponse response){
+    public String logout(HttpServletRequest request, HttpServletResponse response){
 
         System.out.println("LOGOUT");
 
         String link = "";
 
-        System.out.println("---> SESSIONID: " + request.getSession(false).getId());
-        request.getSession(false).removeAttribute("user");
-        request.getSession(false).invalidate();
-        link = "redirect:/";
-
+        try {
+            System.out.println("---> SESSIONID: " + request.getSession(false).getId());
+            request.getSession(false).removeAttribute("user");
+            request.getSession(false).invalidate();
+            link = "redirect:/";
+        }
+        catch (NullPointerException e)
+        {
+            System.out.println("SessionID = 0");
+            link = "redirect:/";
+        }
 
         return link;
     }
