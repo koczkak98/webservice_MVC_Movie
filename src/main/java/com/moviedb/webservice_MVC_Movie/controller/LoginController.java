@@ -38,20 +38,18 @@ public class LoginController {
 
     @PostMapping("/signup")
     public String finishSignUp (@RequestParam("name") String name,
-                          @RequestParam("userName") String userName,
                           @RequestParam("email") String email,
                           @RequestParam("pwd") String pwd,
-                          HttpServletResponse response,
                           Model model)
     {
+        System.out.println("finishSignUp");
         Security security = new Security();
         String message = "";
         boolean isItTrue = true;
 
         List<User> accounts = this.userRepo.findAll();
 
-        if (name.equals("") || userName.equals("")
-                || email.equals("") || pwd.equals("")) {
+        if (name.equals("") || email.equals("") || pwd.equals("")) {
 
             isItTrue = false;
             message = "Some fields are empty!";
@@ -142,7 +140,7 @@ public class LoginController {
                 /** Valid */
                 /** 1. */
                 HttpSession session = request.getSession();
-                session.setMaxInactiveInterval(30);
+                //session.setMaxInactiveInterval(30);
                 System.out.println("SESSIONID: " + session.getId());
 
                 /** 2. */
@@ -175,33 +173,25 @@ public class LoginController {
     }
 
 
+
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response){
+    public String startLogout(HttpServletRequest request, HttpServletResponse response){
+
+        System.out.println("LOGOUT");
 
         String link = "";
 
-        if(request.getSession(false) !=null) {
-            try
-            {
-                request.getSession(false).removeAttribute("logonSessData");
-                request.getSession(false).invalidate();
-                String pageToForward = request.getContextPath();
-                response.sendRedirect(pageToForward);
-            }
-            catch (Exception e)
-            {
-                link = "error.html";
-            }
-            }
-
-        else {
-
-            link = "login.html";
-        }
+        System.out.println("---> SESSIONID: " + request.getSession(false).getId());
+        request.getSession(false).removeAttribute("user");
+        request.getSession(false).invalidate();
+        link = "redirect:/";
 
 
         return link;
     }
+
+
+
 
 
 

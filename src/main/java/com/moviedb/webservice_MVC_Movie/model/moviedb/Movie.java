@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Movie {
 
+
+    private Integer id;
     private String title;
     private String overview;
     private List<Genres> genres;
@@ -11,6 +13,14 @@ public class Movie {
     private double vote_average;
     private double popularity;
 
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

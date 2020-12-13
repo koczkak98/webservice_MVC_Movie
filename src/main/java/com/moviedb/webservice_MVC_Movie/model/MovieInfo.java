@@ -36,5 +36,10 @@ public class MovieInfo {
 	public void addMovie(Movie movie) {
 		this.myMovies.add(movie);
 	}
-	
+
+	public void deleteMovie(Movie movie) {
+		this.myMovies.remove(movie);
+	}
+
+
 }

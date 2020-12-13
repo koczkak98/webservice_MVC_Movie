@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,37 +31,41 @@ public class UserController {
                 @PathVariable("userID") int userID,
                 @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
                 HttpServletRequest request,
-                Model model) throws SQLException
-        {
+                Model model) throws SQLException {
 
             Security security = new Security();
+
             HttpSession session = request.getSession(false);
             User user = new User();
             System.out.println("get/userid");
+            System.out.println("SESSIONID: " + session.getId());
 
             try {
-
                 String var = session.getAttribute("user").toString();
                 System.out.println(var);
                 user = this.userRepo.findByEmail(var);
-            }
-            catch (NullPointerException e)
+            } catch (NullPointerException e)
             {
-                System.out.println("... Null ...");
                 return "redirect:/";
             }
+
 
             if (session == null)
             {
                 System.out.println("... Null ...");
+                System.out.println("session == null");
                 return "redirect:/";
             }
-            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())) )
+            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())))
             {
+                System.out.println(sessionId);
+                System.out.println("sessionId.equals(INVALID_USER))");
+
                 return "redirect:/";
             }
             else if (user.getUserID() != userID)
             {
+                System.out.println("user.getUserID() != userID");
                 return "redirect:/";
             }
             else
@@ -84,19 +90,64 @@ public class UserController {
                 model.addAttribute("myMovies", mi);
                 model.addAttribute("users", user);
 
-
-
-                return "mymovies.html";
+                return "mainpage.html";
             }
         }
 
-        @GetMapping("/addmovie/{userid}")
-        public String startAddMovie (
-                @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
-                HttpServletRequest request)
+
+        @PostMapping("/addmovie/")
+        public String finishAddMovie (
+                                @RequestParam ("movieId") int movieId,
+                                @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
+                                HttpServletRequest request)
         {
 
+            System.out.println("finishAddMovie");
             HttpSession session = request.getSession(false);
+            System.out.println("---> SESSIONID: " + session.getId());
+
+            String var = session.getAttribute("user").toString();
+            User user = this.userRepo.findByEmail(var);
+
+            if (session == null)
+            {
+                return "redirect:/";
+            }
+            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())) )
+            {
+                return "redirect:/";
+            }
+            else
+            {
+                List<Integer> userMovieIds = user.getMovieIds();
+                boolean has = false;
+                for (int i = 0; i<userMovieIds.size(); i++)
+                {
+                    if(movieId == userMovieIds.get(i))
+                    {
+                        has = true;
+                        break;
+                    }
+                }
+                if(has == false) {
+                    user.addMovieIds(movieId);
+                    this.userRepo.save(user);
+                }
+            }
+
+            return "redirect:/getuser/" + user.getUserID();
+        }
+
+        @PostMapping("/deletemovie/")
+        public String deleteMovie (@RequestParam("movietitle") String movieTitle,
+                                   @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
+                                   HttpServletRequest request,
+                                   Model model)
+        {
+            System.out.println("/deletemovie");
+            HttpSession session = request.getSession(false);
+            System.out.println("---> SESSIONID: " + session.getId());
+
             String var = session.getAttribute("user").toString();
             User user = this.userRepo.findByEmail(var);
 
@@ -111,45 +162,54 @@ public class UserController {
                 destinationURL = "redirect:/";
             }
             else {
-                destinationURL = "addmovie.html";
+
+                /** SEARCH MOVIE */
+                MovieInfo mi = new MovieInfo(user.getUserID());
+                List<Integer> myMovieIDs = user.getMovieIds();
+                System.out.println(myMovieIDs);
+
+                RestTemplate restTemplate = new RestTemplate();
+                for (int idx = 0; idx < myMovieIDs.size(); idx++) {
+                    Movie movie = restTemplate.getForObject("https://api.themoviedb.org/3/movie/" + myMovieIDs.get(idx) + "?api_key=05e00aec1b6318f6f5a4702d18a8f725", Movie.class);
+
+                    mi.addMovie(movie);
+                }
+
+                int counter = 0;
+                String message = "";
+                Movie resultMovie = null;
+                for (int i = 0; i < mi.getMyMovies().size(); i++)
+                {
+                    if (movieTitle.contains(mi.getMyMovies().get(i).getTitle()))
+                    {
+                        counter++;
+                        resultMovie = mi.getMyMovies().get(i);
+                    }
+                }
+                mi.getMyMovies().clear();
+
+                /** DELETE MOVIE */
+                if(counter == 1) {
+                    System.out.println(resultMovie.getId());
+                    user.deleteMovieIds(resultMovie.getId());
+                    userRepo.save(user);
+                    message = "Successfully";
+                }
+                else
+                {
+                    message = "Unsuccessfully";
+                }
+                System.out.println(message);
             }
 
-            return destinationURL;
-        }
-
-
-        @PostMapping("/addmovie/")
-        public String finishAddMovie (
-                                @RequestParam ("movieId") int movieId,
-                                @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
-                                HttpServletRequest request)
-        {
-
-            HttpSession session = request.getSession(false);
-            String var = session.getAttribute("user").toString();
-            User user = this.userRepo.findByEmail(var);
-
-            if (session == null)
-            {
-                return "redirect:/";
-            }
-            else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())) )
-            {
-                return "redirect:/";
-            }
-            else
-            {
-                user.addMovieIds(movieId);
-                this.userRepo.save(user);
-            }
-
-            return "redirect:/getuser/" + user.getUserID();
+            return "redirect:/getuser/"+user.getUserID();
         }
 
         @GetMapping("/searchmovie")
         public String searchMovieByTitle (
                                         @RequestParam("movieTitle") String movieTitle,
                                         HttpServletRequest request,
+                                        @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
                                         Model model)
         {
 
@@ -180,18 +240,22 @@ public class UserController {
                 }
             }
 
-            if (counter > 1)
+            if (counter == 1)
+            {
+                message = "Successful!";
+            }
+            else
             {
                 message = "Unsuccessful!";
             }
 
-            System.out.println(resultMovie);
+            System.out.println(resultMovie.getTitle());
             System.out.println(message);
 
             model.addAttribute("hits", resultMovie);
             model.addAttribute("message", message);
 
-            return "mymovies.html";
+            return "redirect:/getuser/" + user.getUserID();
         }
 
         @GetMapping("/movie/top_rated")
@@ -205,6 +269,21 @@ public class UserController {
             model.addAttribute("topRating", movies);
 
             return "toprating.html";
+        }
+
+        /** RSA */
+        @GetMapping("/example/getmovie/{movieID}")
+        public Movie getMovieByID (@PathVariable("movieID") String movieID) throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+            RestTemplate rs = new RestTemplate();
+            String publicKey_Base64 = rs.getForObject("http://localhost:8081/getPublicKey", String.class);
+            SecurityRSA rsa = new SecurityRSA(publicKey_Base64);
+
+            String encryptedMovieId = rsa.encrypt(movieID);
+
+            Movie movie = rs.getForObject("http://localhost:8081/getmovie/" + encryptedMovieId, Movie.class);
+
+            return movie;
         }
 
 

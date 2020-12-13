@@ -9,8 +9,15 @@
 
     <body>
 
-        <p id ="topRatingMovies" th:each="movies : ${movies.results}"
+
+
+        <p id ="topRatingMovies" th:each="movies : ${topRating.results}"
            th:text="${movies.title}" ></p>
+
+        <div class="header">
+            <h1>Header</h1>
+            <p>My supercool header</p>
+        </div>
 
     </body>
 </html>

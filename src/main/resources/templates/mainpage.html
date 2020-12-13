@@ -16,43 +16,62 @@
 
 		</script>
 
+
+
 		<p th:text="${users.name}" ></p>
 	
 		<p th:each="myMovie : ${myMovies.myMovies}" 
 			th:text="${myMovie.title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
 			'  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
 
-		<p th:each="hitsMovie: ${hits}"
-			th:text="${hitsMovie.title} + ' - ' + ${hitsMovie.overview}" ></p>
-
-
-		<!-- SEARCH MOVIE -->
-		<form >
-			<label> Enter the title of the movie: </label>  <input id="movieTitleField" type="text" name="movieTitle" onchange="searchMovieTitle()" > </input>
-			<input type="submit" value="Search" > </input>
-		</form>
 
 		<!-- CHANGE NICKNAME -->
+		<p> Change Nickname </p>
 		<form >
 			<label> Nickname: </label> <input id="nickNameField" type="text" name="userName" > </input>
 			<input type="submit" value="Change" onclick="changeNickname()"> </input>
 		</form>
 
-		<!-- LOGOUT -->
-		<form action="/logout" method="get" >
-			<input type="submit" value="LogOut" > </input>
-		</form>
+		<p></p>
 
 		<!-- ADDMOVIE -->
-		<form th:object="${user}" action="/addmovie" method="get">
-			<input type="submit" value="Add movie" > </input>
+		<p> Add movie </p>
+		<form th:action="@{/addmovie/}" method="post">
+
+			<label> Movie ID </label> <input type="text" name="movieId" > </input>
+			<input type="submit" value="ADD" > </input>
+		</form>
+
+		<p></p>
+
+		<!-- DELETE MOVE -->
+		<p> Delete movie </p>
+		<form th:action="@{/deletemovie/}" method="post" >
+			<label> Title: </label> <input type="text" name="movietitle" > </input>
+			<input type="submit" value="DELETE" > </input>
+		</form>
+
+		<p></p>
+
+		<!-- SEARCH MOVIE -->
+		<p> Search movie </p>
+		<form th:action="@{/searchmovie}" >
+			<label> Enter the title of the movie: </label>  <input id="movieTitleField" type="text" name="movieTitle" onchange="searchMovieTitle()" > </input>
+			<input type="submit" value="Search" > </input>
+		</form>
+
+		<p></p>
+
+		<!-- LOGOUT -->
+		<form th:action="@{/logout/}" method="get" >
+			<input type="submit" value="LOGOUT"> </input>
 		</form>
 
 
 		<script>
 
 		var movieTitleFieldGet = document.getElementById("movieTitleField");
-        movieTitleFieldGet.value = sessionStorage.getItem("movieTitleFieldGet");
+        movieTitleFieldGet.value = sessionStorage.getItem("movieTitle");
 
 		function changeNickname()
 		{

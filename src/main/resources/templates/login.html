@@ -13,14 +13,15 @@
 
         <form id="login" action="/" method="post" name="login" >
 
-            <label> E-mail adress: </label> <input type="email" name="email" > </input>
+            <label> E-mail adress: </label> <input type="email" id="emailField" name="email" > </input>
             <p></p>
             <label>Password: </label> <input type="password" name="pwd" > </input>
             <input type="submit" id="logInSend" value="Login" onclick="logIn()" > </input>
         </form>
     <p th:text="${message}" ></p>
 
-    <br />
+
+
     <br />
     <br />
 
@@ -29,6 +30,14 @@
         <script type="text/javascript" >
 
            localStorage.removeItem("userName");
+           var emailFieldGet = document.getElementById("emailField");
+           emailFieldGet.value = sessionStorage.getItem("email");
+
+           function logIn ()
+           {
+                var emailField = document.getElementById("emailField");
+                sessionStorage.setItem("email", emailField.value);
+           }
 
         </script>
 

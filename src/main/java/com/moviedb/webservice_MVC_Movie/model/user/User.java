@@ -69,7 +69,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-
     }
 
 
@@ -103,6 +102,12 @@ public class User {
     }
 
     public void addMovieIds (int movieId){ this.movieIds.add(movieId);}
+
+    public void deleteMovieIds (int movieId){
+        this.movieIds.remove(movieIds.indexOf(movieId));
+
+    }
+
 
 
 

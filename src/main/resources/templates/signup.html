@@ -12,24 +12,29 @@
         <form id="signUp" action="/signup" method="post">
             <label> Full Name: </label> <input type="text" name="name" >  </input>
             <p></p>
-            <label> Nickname: </label> <input id="nickNameField" type="text" name="userName" > </input>
-            <p></p>
             <label> E-mail adress: </label> <input type="email" name="email" > </input>
             <p></p>
-            <label> Password: </label> <input type="password" name="pwd" > </input>
-            <input type="submit" value="Signup" onclick="nicknameAdd()" > </input>
+            <label> Password: </label> <input type="password" id="pwdField" name="pwd" oninput="pwdLength()"> </input>
+            <input type="submit" value="Signup" > </input>
         </form>
 
-        <script type="text/javascript" >
+    <script>
 
+        var pwdField = document.getElementById("pwdField");
+        var strLength = pwdField.value.length;
 
-                   function nicknameAdd()
-                   {
-                       var nickNameField = document.getElementById("nickNameField");
-                       localStorage.setItem("userName", nickNameField.value);
-                   }
+        function pwdLength()
+        {
+            if ( strLength < 8 )
+            {
+                var pwdField = document.getElementById("pwdField");
+                var strLength = pwdField.value.length;
+                pwdField = style.color = "red";
+            }
 
-                </script>
+        }
+
+    </script>
 
     </body>
 </html>
