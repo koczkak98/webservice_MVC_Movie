@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+	<head> 
+		<title th:text="${users.name}"> </title>
+		<link rel="stylesheet" type="text/css" media="all"
+			  th:href="@{/style/style.css}" />
+	</head> 
+	
+	<body>
+		<script>
+
+			if ( localStorage.getItem("userName") != null )
+			{
+				alert( "Hi " + localStorage.getItem("userName") + "!" );
+			}
+
+		</script>
+
+
+
+		<p th:text="${users.name}" ></p>
+	
+		<p th:each="myMovie : ${myMovies.myMovies}" 
+			th:text="${myMovie.title} + '-' + ${myMovie.overview} + '  -   ' + ${myMovie.vote_average} +
+			'  -   ' + ${myMovie.vote_count} + '  -   ' + ${myMovie.popularity} "></p>
+
+
+		<!-- CHANGE NICKNAME -->
+		<p> Change Nickname </p>
+		<form >
+			<label> Nickname: </label> <input id="nickNameField" type="text" name="userName" > </input>
+			<input type="submit" value="Change" onclick="changeNickname()"> </input>
+		</form>
+
+		<p></p>
+
+		<!-- ADDMOVIE -->
+		<p> Add movie </p>
+		<form th:action="@{/addmovie/}" method="post">
+
+			<label> Movie ID </label> <input type="text" name="movieId" > </input>
+			<input type="submit" value="ADD" > </input>
+		</form>
+
+		<p></p>
+
+		<!-- DELETE MOVE -->
+		<p> Delete movie </p>
+		<form th:action="@{/deletemovie/}" method="post" >
+			<label> Title: </label> <input type="text" name="movietitle" > </input>
+			<input type="submit" value="DELETE" > </input>
+		</form>
+
+		<p></p>
+
+		<!-- SEARCH MOVIE -->
+		<p> Search movie </p>
+		<form th:action="@{/searchmovie}" >
+			<label> Enter the title of the movie: </label>  <input id="movieTitleField" type="text" name="movieTitle" onchange="searchMovieTitle()" > </input>
+			<input type="submit" value="Search" > </input>
+		</form>
+
+		<p></p>
+
+		<!-- LOGOUT -->
+		<form th:action="@{/logout/}" method="get" >
+			<input type="submit" value="LOGOUT"> </input>
+		</form>
+
+
+		<script>
+
+		var movieTitleFieldGet = document.getElementById("movieTitleField");
+        movieTitleFieldGet.value = sessionStorage.getItem("movieTitle");
+
+		function changeNickname()
+		{
+			var nickNameField = document.getElementById("nickNameField");
+            localStorage.setItem("userName", nickNameField.value);
+		}
+
+		function searchMovieTitle()
+		{
+			var movieTitleField = document.getElementById("movieTitleField");
+            sessionStorage.setItem("movieTitle", movieTitleField.value);
+		}
+
+		</script>
+
+
+	
+	</body> 
+</html>
