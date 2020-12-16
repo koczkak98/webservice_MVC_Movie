@@ -31,3 +31,13 @@ h1 {
 {
     background-color: gray;
 }
+
+div.loginLinkMainPage
+{
+    text-align: right;
+}
+
+div.profile
+{
+    text-align: right;
+}

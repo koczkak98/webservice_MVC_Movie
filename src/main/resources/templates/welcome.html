@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title> Movies </title>
+        <link rel="stylesheet" type="text/css" media="all"
+              th:href="@{/style/style.css}" />
+
+        <div class="profile" >
+        <td th:each="user : ${users}">
+           <h2> <a th:href="@{/getuser/{userid}(userid=${user.userID})}">PROFILE</a> </h2>
+        </td>
+        </div>
+
+        
+    </head>
+
+    <body>
+
+        <div class="container">
+            <p id ="topRatingField" name="topRating" th:each="movies : ${topRating.results}"
+               th:text="${movies.title}" data-toggle="tooltip" title="${movies.overview}" > </p>
+
+        </div>
+        <script>
+                $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+            });
+            </script>
+
+    </body>
+</html>

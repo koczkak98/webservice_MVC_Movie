@@ -46,7 +46,7 @@ public class UserController {
                 user = this.userRepo.findByEmail(var);
             } catch (NullPointerException e)
             {
-                return "redirect:/";
+                return "redirect:/login";
             }
 
 
@@ -54,19 +54,19 @@ public class UserController {
             {
                 System.out.println("... Null ...");
                 System.out.println("session == null");
-                return "redirect:/";
+                return "redirect:/login";
             }
             else if ( (!sessionId.equals("INVALID_USER")) && (!sessionId.equals(session.getId())))
             {
                 System.out.println(sessionId);
                 System.out.println("sessionId.equals(INVALID_USER))");
 
-                return "redirect:/";
+                return "redirect:/login";
             }
             else if (user.getUserID() != userID)
             {
                 System.out.println("user.getUserID() != userID");
-                return "redirect:/";
+                return "redirect:/login";
             }
             else
                 {
@@ -258,18 +258,43 @@ public class UserController {
             return "redirect:/getuser/" + user.getUserID();
         }
 
-        @GetMapping("/movie/top_rated")
-        public String getTopRating (
-               Model model) {
+        @GetMapping("/")
+        public String mainPage (
+                HttpServletRequest request,
+                @CookieValue(value = "JSESSIONID", defaultValue = "INVALID_USER") String sessionId,
+                Model model) {
+
+            String returnLink = "";
+
+            /** CHECK SESSION AND USER */
+            HttpSession session = request.getSession(false);
+            try {
+                String var = session.getAttribute("user").toString();
+                User user = this.userRepo.findByEmail(var);
+
+                model.addAttribute("users", user);
+
+                returnLink = "welcome.html";
+            }
+            catch (NullPointerException e)
+            {
+                returnLink = "toprating.html";
+            }
+            catch (Exception e)
+            {
+                returnLink = "toprating.html";
+            }
+
 
             RestTemplate restTemplate = new RestTemplate();
-
             Movies movies = restTemplate.getForObject("https://api.themoviedb.org/3/movie/top_rated?api_key=05e00aec1b6318f6f5a4702d18a8f725", Movies.class);
-
             model.addAttribute("topRating", movies);
 
-            return "toprating.html";
+            return returnLink;
         }
+
+
+
 
         /** RSA */
         @GetMapping("/example/getmovie/{movieID}")

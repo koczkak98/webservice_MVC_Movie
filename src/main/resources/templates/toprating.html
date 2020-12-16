@@ -5,9 +5,16 @@
         <title> Top Rating Movies </title>
         <link rel="stylesheet" type="text/css" media="all"
               th:href="@{/style/style.css}" />
+
+        <div class="loginLinkMainPage" >
+        <h2><a href="/login" id="loginField" name="loginLinkMainPage"> LOGIN </a></h2>
+        </div>
     </head>
 
     <body>
+
+
+
     <div class="container">
         <p id ="topRatingField" name="topRating" th:each="movies : ${topRating.results}"
            th:text="${movies.title}" data-toggle="tooltip" title="${movies.overview}" > </p>

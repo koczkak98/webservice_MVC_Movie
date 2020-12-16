@@ -24,7 +24,7 @@ public class LoginController {
     private static final String initVector = "initVectorKey123";
     private static final String key = "aesEncryptionKey";
 
-    @GetMapping("/")
+    @GetMapping("/login")
     public String welcome() {
 
         return "login.html";
@@ -96,7 +96,7 @@ public class LoginController {
             /** Save DB */
             this.userRepo.save(user);
             message = "Successful registration!";
-            returnLink = "redirect:/";
+            returnLink = "redirect:/login";
         }
         else
         {
@@ -108,7 +108,7 @@ public class LoginController {
         return returnLink;
     }
 
-    @PostMapping("/")
+    @PostMapping("/login")
     public String login (@RequestParam("email") String email,
                          @RequestParam("pwd") String pwd,
                          HttpServletRequest request,
@@ -153,7 +153,7 @@ public class LoginController {
                 session.setAttribute("user", encryptEmailString);
                 message = "Valid";
 
-                destinationURL = "redirect:/getuser/" + accounts.get(0).getUserID();
+                destinationURL = "redirect:/";
             }
             else
             {
